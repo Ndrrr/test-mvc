@@ -33,15 +33,4 @@ public class UserController {
         log.info("User deleted: {}", id);
         return loadUsers();
     }
-
-    @GetMapping("/search")
-    public ModelAndView searchUser(@RequestParam(value = "keyword", defaultValue = "") String name,
-                                   @RequestParam(value = "page", defaultValue = "1") Integer page,
-                                   @RequestParam(value = "sort", defaultValue = "id") String sort) {
-        ModelAndView modelAndView = new ModelAndView("users");
-        modelAndView.addObject("users", userService.getAllAthletesByName(name, page, sort));
-        modelAndView.addObject("pages", userService.getPages());
-        log.info("Users are searched by name: {}, page: {}, sort: {}", name, page, sort);
-        return modelAndView;
-    }
 }

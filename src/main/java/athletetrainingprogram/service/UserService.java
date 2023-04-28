@@ -2,15 +2,12 @@ package athletetrainingprogram.service;
 
 import athletetrainingprogram.dto.UserDto;
 import athletetrainingprogram.dto.request.SignUpRequest;
-import athletetrainingprogram.dto.response.AthleteResponse;
+import athletetrainingprogram.dto.request.UpdateUserRequest;
 import athletetrainingprogram.model.User;
 import athletetrainingprogram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,27 +40,24 @@ public class UserService {
         return pages;
     }
 
-    public List<AthleteResponse> getAllAthletesByName(String name, Integer page, String sort) {
-        Pageable pageable = PageRequest.of(page - 1, PAGE_SIZE, Sort.by(sort));
-        return userRepo.findAllByUsername("%" + name + "%", pageable)
-                .stream()
-                .map(athlete -> modelMapper.map(athlete, AthleteResponse.class))
-                .collect(Collectors.toList());
-    }
-
     public List<UserDto> getAllUsers() {
         return userRepo.findAll()
                 .stream()
-                .map(user -> {
-                    var userDto = modelMapper.map(user, UserDto.class);
-                    userDto.setRoles(user.getRoleList());
-                    return userDto;
-                })
+                .map(user -> modelMapper.map(user, UserDto.class))
                 .toList();
     }
 
-    public void updateUser(User user) {
-        userRepo.save(user);
+    public UserDto getUser(Long id) {
+        return userRepo.findById(id)
+                .map(user -> modelMapper.map(user, UserDto.class))
+                .orElseThrow();
+    }
+
+    public void updateUser(Long id, UpdateUserRequest user) {
+        var dbUser = userRepo.findById(id).orElseThrow();
+        dbUser.setRoles(user.getRoles());
+        dbUser.setAuthorities(List.of(user.getRoles().split(",")));
+        userRepo.save(dbUser);
     }
 
     public void deleteUser(Long id) {

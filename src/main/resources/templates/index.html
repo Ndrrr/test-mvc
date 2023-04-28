@@ -45,6 +45,8 @@
                 <h1 class="wow fadeInUp" data-wow-delay="1.6s">Professional<br>Fitness Club</h1>
                 <a sec:authorize="isAuthenticated()" href="/athlete" class="wow fadeInUp smoothScroll btn btn-default"
                    data-wow-delay="2s">ATHLETE</a>
+                <a sec:authorize="hasAuthority('ROLE_ADMIN')" href="/user" class="wow fadeInUp smoothScroll btn btn-default"
+                   data-wow-delay="2s"> MANAGE USERS </a>
                 <a sec:authorize="isAuthenticated()" href="/logout" class="wow fadeInUp smoothScroll btn btn-default"
                    data-wow-delay="2s">LOGOUT</a>
                 <a sec:authorize="isAnonymous()" href="/login" class="wow fadeInUp smoothScroll btn btn-default"

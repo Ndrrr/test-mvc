@@ -33,10 +33,6 @@ public class User implements UserDetails {
     @Transient
     private List<String> authorities = new ArrayList<>();
 
-    public List<String> getRoleList() {
-        return authorities;
-    }
-
     public List<GrantedAuthority> getAuthorities() {
         return authorities.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
     }
