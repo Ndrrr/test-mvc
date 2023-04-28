@@ -1,7 +1,7 @@
 package athletetrainingprogram.controller;
 
 import athletetrainingprogram.dto.request.SignUpRequest;
-import athletetrainingprogram.service.AuthService;
+import athletetrainingprogram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -18,17 +18,18 @@ import org.springframework.web.servlet.ModelAndView;
 @RequiredArgsConstructor
 public class SignUpController {
 
-    private final AuthService authService;
+    private final UserService userService;
 
     @GetMapping
     public ModelAndView showSignUp(Model model) {
         model.addAttribute("signUpRequest", new SignUpRequest());
+        log.info("Sign up page requested");
         return new ModelAndView("signup");
     }
 
     @PostMapping
     public String register(@ModelAttribute SignUpRequest signUpRequest) {
-        authService.signUp(signUpRequest);
+        userService.signUp(signUpRequest);
         log.info("User registered: {}", signUpRequest.getUsername());
         return "redirect:/login";
     }

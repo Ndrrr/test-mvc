@@ -46,12 +46,14 @@ public class AthleteController {
     @PostMapping
     public ModelAndView addAthlete(@ModelAttribute("athlete") CreateAthleteRequest request, Model model) {
         athleteService.createAthlete(request);
+        log.info("Athlete created: {}", request);
         return loadAthlete(model);
     }
 
     @PostMapping("/delete")
     public ModelAndView delete(@RequestParam Long id, Model model) {
         athleteService.deleteAthlete(id);
+        log.info("Athlete deleted: {}", id);
         return loadAthlete(model);
     }
 

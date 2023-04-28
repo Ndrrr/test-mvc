@@ -31,7 +31,11 @@ public class User implements UserDetails {
     private String roles; // ROLE_USER, ROLE_ADMIN
 
     @Transient
-    private List<String> authorities = new ArrayList<>(Arrays.asList("ROLE_USER"));
+    private List<String> authorities = new ArrayList<>();
+
+    public List<String> getRoleList() {
+        return authorities;
+    }
 
     public List<GrantedAuthority> getAuthorities() {
         return authorities.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
